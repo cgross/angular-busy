@@ -9,7 +9,7 @@ indication on a specific element during the `$http` request.
 
 ## Demo
 
-[Live Demo](https://cgross.github.io/angular-busy/demo)
+[Live Demo](http://cgross.github.io/angular-busy/demo)
 
 ## Getting Started
 
