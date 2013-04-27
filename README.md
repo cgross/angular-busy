@@ -11,6 +11,32 @@ indication on a specific element during the `$http` request.
 
 [Live Demo](https://cgross.github.io/angular-busy/demo)
 
+## Getting Started
+
+Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.  Also add the `angular-promise-tracker` files as necessary.
+
+Add `cgBusy` as a module dependency for your module (in addition to `ajoslin.promise-tracker`):
+
+```js
+angular.module('your_app', ['cgBusy','ajoslin.promise-tracker']);
+```
+
+Add the promise trackers as you normally would using `angular-promise-tracker`:
+
+```js
+function MyCtrl($scope) {
+
+  $scope.pizzaFlavor = $http.get('/pizzaFlavor', { tracker: 'pizza' });
+  
+}
+```
+
+Add `cg-busy` to the elements you wish to be _busy_ during those requests:
+
+```html
+<div cg-busy="'pizza'"></div>
+```
+
 ## Options
 
 The `cg-busy` directive expects a value that is interpreted as an expression.  The value may be specified as an object literal 
@@ -44,32 +70,6 @@ angular.module('yourapp').value('cgBusyTemplateName','your_custom_template_here.
 ```
 
 Templates are full, normal Angular partials with access to the scope of where the `cg-busy` was used.
-
-## Getting Started
-
-Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.  Also add the `angular-promise-tracker` files as necessary.
-
-Add `cgBusy` as a module dependency for your module (in addition to `ajoslin.promise-tracker`):
-
-```js
-angular.module('your_app', ['cgBusy','ajoslin.promise-tracker']);
-```
-
-Add the promise trackers as you normally would using `angular-promise-tracker`:
-
-```js
-function MyCtrl($scope) {
-
-  $scope.pizzaFlavor = $http.get('/pizzaFlavor', { tracker: 'pizza' });
-  
-}
-```
-
-Add `cg-busy` to the elements you wish to be _busy_ during those requests:
-
-```html
-<div cg-busy="'pizza'"></div>
-```
 
 ## Release History
 
