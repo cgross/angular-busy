@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <title>Angular Busy Demo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <link href="../dist/angular-busy.css" rel="stylesheet">
+
+</head>
+<body ng-controller="DemoCtrl" style="padding-top:50px">
+
+  <div>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">Title</a>
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container">
+      <div class="row">
+
+        <div class="span4">
+
+          <form>
+            <fieldset>
+              <legend>Demo</legend>
+              <label>Busy Time (ms)</label>
+              <input type="text" ng-model="delay1">
+              <br/>
+              <button class="btn" ng-click="demoBusy('demo1',delay1)">Try It</button>
+            </fieldset>
+          </form>          
+
+          
+
+        </div>
+
+        <div class="span8">
+
+          <table class="table table-bordered" cg-busy="{tracker:'demo1'}">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">1</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@TwBootstrap</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="span4">
+
+          <form>
+            <fieldset>
+              <legend>Custom Template</legend>
+              <label>Busy Time (ms)</label>
+              <input type="text" ng-model="delay2">
+              <br/>
+              <button class="btn" ng-click="demoBusy('demo2',delay2)">Try It</button>
+            </fieldset>
+          </form>          
+
+          
+
+        </div>
+
+        <div class="span8">
+
+          <table class="table table-bordered" cg-busy="{tracker:'demo2',template:'custom-template.html'}">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">1</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@TwBootstrap</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.js"></script>
+  <script src="../lib/promise-tracker.js"></script>
+  <script src="../dist/angular-busy.js"></script>
+  <script src="demo.js"></script> 
+
+</body>
+</html>
