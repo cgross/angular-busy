@@ -7,6 +7,8 @@ This library depends on [Andy Joslin's angular-promise-tracker](https://github.c
 Annotate an `$http` request using `angular-promise-tracker` and add `cg-busy` on an element to display a busy 
 indication on a specific element during the `$http` request.
 
+Supports IE 10, and recent versions of FF and Chrome.
+
 ## Demo
 
 [Live Demo](http://cgross.github.io/angular-busy/demo)
