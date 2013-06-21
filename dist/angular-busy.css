@@ -6,22 +6,14 @@
 	bottom:0px;
 }
 
-.cg-busy-show-setup{
+.cg-busy-show, .cg-busy-hide{
 	-webkit-transition:all .3s ease;
 	-moz-transition:all .3s ease;
 	-o-transition:all .3s ease;
 	transition:all .3s ease;
 }
 
-/* Keeping these separate (show and hide setup) so we can add a delay to show later */
-.cg-busy-hide-setup{
-	-webkit-transition:all .3s ease;
-	-moz-transition:all .3s ease;
-	-o-transition:all .3s ease;
-	transition:all .3s ease;
-}
-
-.cg-busy-show-setup{
+.cg-busy-show {
 	opacity:0;
 	-webkit-transform:translate(0px,-40px);
 	-moz-transform:translate(0px,-40px);
@@ -30,7 +22,7 @@
 	transform:translate(0px,-40px);
 }
 
-.cg-busy-hide-setup{
+.cg-busy-hide {
 	opacity:1;
 	-webkit-transform:translate(0px,0px);
 	-moz-transform:translate(0px,0px);
@@ -39,7 +31,7 @@
 	transform:translate(0px,0px);
 }
 
-.cg-busy-show-start{
+.cg-busy-show.cg-busy-show-active{
 	opacity:1;
 	-webkit-transform:translate(0px,0px);
 	-moz-transform:translate(0px,0px);
@@ -48,7 +40,7 @@
 	transform:translate(0px,0px);
 }
 
-.cg-busy-hide-start{
+.cg-busy-hide.cg-busy-hide-active {
 	opacity:0;
 	-webkit-transform:translate(0px,-40px);
 	-moz-transform:translate(0px,-40px);
@@ -57,7 +49,7 @@
 	transform:translate(0px,-40px);
 }
 
-.cg-busy-backdrop{
+.cg-busy-backdrop {
 	background-color:white;
 	opacity:.7;
 }

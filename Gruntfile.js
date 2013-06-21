@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     connect: {
       livereload: {
         options: {
-          port: 9001,
+          port: 8001,
           middleware: function(connect, options) {
             return [lrSnippet, folderMount(connect, options.base)]
           }
@@ -50,9 +50,9 @@ module.exports = function (grunt) {
     },
     jasmine: {
       unit: {
-        src: [''],
+        src: ['./lib/jquery.js','./lib/angular.js','./lib/angular-mocks.js','./lib/promise-tracker.js','./dist/angular-busy.js','./demo/demo.js'],
         options: {
-          specs: 'test/unit/*.js'
+          specs: 'test/*.js'
         }
       }
     },
@@ -108,5 +108,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask('server', ['livereload-start','jshint','connect', 'regarde']);
   grunt.registerTask('build',['copy','ngtemplates','concat','uglify','cssmin']);
-
+  grunt.registerTask('test',['build','jasmine']);
 };
