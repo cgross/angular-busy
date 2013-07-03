@@ -49,7 +49,7 @@ module.exports = function (grunt) {
     },
     jasmine: {
       unit: {
-        src: ['./lib/jquery.js','./lib/angular.js','./lib/angular-mocks.js','./lib/promise-tracker.js','./dist/angular-busy.js','./demo/demo.js'],
+        src: ['./components/jquery/jquery.js','./components/angular-unstable/angular.js','./lib/angular-mocks.js','./components/angular-promise-tracker/promise-tracker.js','./dist/angular-busy.js','./demo/demo.js'],
         options: {
           specs: 'test/*.js'
         }
