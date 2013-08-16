@@ -17,7 +17,7 @@ Supports IE 10, and recent versions of FF and Chrome.
 
 ## Getting Started
 
-Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.  Also add the `angular-promise-tracker` files as necessary.  You'll 
+Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.  Also add the `angular-promise-tracker` files as necessary.
 
 Add `cgBusy` as a module dependency for your module (in addition to `ajoslin.promise-tracker` and the Angular 1.2 `ngAnimate` module):
 
