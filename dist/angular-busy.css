@@ -6,47 +6,45 @@
 	bottom:0px;
 }
 
-.cg-busy-show, .cg-busy-hide{
-	-webkit-transition:all .3s ease;
-	-moz-transition:all .3s ease;
-	-o-transition:all .3s ease;
-	transition:all .3s ease;
+.cg-busy-animation.ng-hide-add,
+.cg-busy-animation.ng-hide-remove {
+    -webkit-transition:all .3s ease;
+    -moz-transition:all .3s ease;
+    -o-transition:all .3s ease;
+    transition:all .3s ease;
+    display:block !important;
 }
-
-.cg-busy-show {
-	opacity:0;
-	-webkit-transform:translate(0px,-40px);
-	-moz-transform:translate(0px,-40px);
-	-ms-transform:translate(0px,-40px);
-	-o-transform:translate(0px,-40px);
-	transform:translate(0px,-40px);
+.cg-busy-animation.ng-hide-remove {
+    opacity:0;
+    -webkit-transform:translate(0px,-40px);
+    -moz-transform:translate(0px,-40px);
+    -ms-transform:translate(0px,-40px);
+    -o-transform:translate(0px,-40px);
+    transform:translate(0px,-40px);
 }
-
-.cg-busy-hide {
-	opacity:1;
-	-webkit-transform:translate(0px,0px);
-	-moz-transform:translate(0px,0px);
-	-ms-transform:translate(0px,0px);
-	-o-transform:translate(0px,0px);
-	transform:translate(0px,0px);
+.cg-busy-animation.ng-hide-remove.ng-hide-remove-active {
+    opacity:1;
+    -webkit-transform:translate(0px,0px);
+    -moz-transform:translate(0px,0px);
+    -ms-transform:translate(0px,0px);
+    -o-transform:translate(0px,0px);
+    transform:translate(0px,0px);
 }
-
-.cg-busy-show.cg-busy-show-active{
-	opacity:1;
-	-webkit-transform:translate(0px,0px);
-	-moz-transform:translate(0px,0px);
-	-ms-transform:translate(0px,0px);
-	-o-transform:translate(0px,0px);
-	transform:translate(0px,0px);
+.cg-busy-animation.ng-hide-add {
+    opacity:1;
+    -webkit-transform:translate(0px,0px);
+    -moz-transform:translate(0px,0px);
+    -ms-transform:translate(0px,0px);
+    -o-transform:translate(0px,0px);
+    transform:translate(0px,0px);
 }
-
-.cg-busy-hide.cg-busy-hide-active {
-	opacity:0;
-	-webkit-transform:translate(0px,-40px);
-	-moz-transform:translate(0px,-40px);
-	-ms-transform:translate(0px,-40px);
-	-o-transform:translate(0px,-40px);
-	transform:translate(0px,-40px);
+.cg-busy-animation.ng-hide-add.ng-hide-add-active {
+    opacity:0;
+    -webkit-transform:translate(0px,-40px);
+    -moz-transform:translate(0px,-40px);
+    -ms-transform:translate(0px,-40px);
+    -o-transform:translate(0px,-40px);
+    transform:translate(0px,-40px);
 }
 
 .cg-busy-backdrop {

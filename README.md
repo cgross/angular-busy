@@ -7,6 +7,8 @@ This library depends on [Andy Joslin's angular-promise-tracker](https://github.c
 Annotate an `$http` request using `angular-promise-tracker` and add `cg-busy` on an element to display a busy 
 indication on a specific element during the `$http` request.
 
+This library builds on Angular 1.2 and the new Angular animate module in `animate.js`.
+
 Supports IE 10, and recent versions of FF and Chrome.
 
 ## Demo
@@ -15,12 +17,12 @@ Supports IE 10, and recent versions of FF and Chrome.
 
 ## Getting Started
 
-Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.  Also add the `angular-promise-tracker` files as necessary.
+Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.  Also add the `angular-promise-tracker` files as necessary.  You'll 
 
-Add `cgBusy` as a module dependency for your module (in addition to `ajoslin.promise-tracker`):
+Add `cgBusy` as a module dependency for your module (in addition to `ajoslin.promise-tracker` and the Angular 1.2 `ngAnimate` module):
 
 ```js
-angular.module('your_app', ['cgBusy','ajoslin.promise-tracker']);
+angular.module('your_app', ['ngAnimate','ajoslin.promise-tracker','cgBusy']);
 ```
 
 Add the promise trackers as you normally would using `angular-promise-tracker`:
@@ -74,6 +76,7 @@ angular.module('yourapp').value('cgBusyTemplateName','your_custom_template_here.
 Templates are full, normal Angular partials with access to the scope of where the `cg-busy` was used.
 
 ## Release History
+ * v2.0.0 - Moved to Angular 1.2.0-rc1.
  * v1.0.0 - Added Bower support.
  * v0.1.1 - Updated to Angular 1.1.5 animation syntax.
  * v0.1.0 - Initial release.

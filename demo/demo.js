@@ -1,4 +1,4 @@
-angular.module('app', ['cgBusy','ajoslin.promise-tracker']);
+angular.module('app', ['ngAnimate','ajoslin.promise-tracker','cgBusy']);
 
 angular.module('app').controller('DemoCtrl',function($scope,promiseTracker,$q,$timeout){
 

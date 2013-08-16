@@ -1,13 +1,14 @@
 {
   "name": "angular-busy",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": [
     "dist/angular-busy.js",
     "dist/angular-busy.css"
   ],
   "dependencies": {
-    "angular-unstable": "johannestroeger/bower-angular-unstable#~1.1.5",
-    "angular-promise-tracker": "~1.3.3"
+    "angular-unstable": "1.2.0rc1",
+    "angular-promise-tracker": "~1.3.3",
+    "angular-animate": "*"
   },
   "ignore": [
     "**/.*",
@@ -26,5 +27,8 @@
   ],
   "devDependencies": {
     "jquery": "~2.0.2"
+  },
+  "resolutions": {
+    "angular-unstable": "1.2.0rc1"
   }
 }
