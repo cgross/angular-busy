@@ -29,6 +29,7 @@
     "jquery": "~2.0.2"
   },
   "resolutions": {
-    "angular-unstable": "1.2.0rc1"
+    "angular-unstable": "1.2.0rc1",
+    "angular": "1.2.0rc1"
   }
 }
