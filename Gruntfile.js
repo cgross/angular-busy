@@ -49,7 +49,7 @@ module.exports = function (grunt) {
     },
     jasmine: {
       unit: {
-        src: ['./bower_components/jquery/jquery.js','./bower_components/angular-unstable/angular.min.js','./bower_components/angular-animate/angular-animate.js','./lib/angular-mocks.js','./bower_components/angular-promise-tracker/promise-tracker.js','./dist/angular-busy.js','./demo/demo.js'],
+        src: ['./bower_components/jquery/jquery.js','./bower_components/angular/angular.js','./bower_components/angular-animate/angular-animate.js','./lib/angular-mocks.js','./bower_components/angular-promise-tracker/promise-tracker.js','./dist/angular-busy.js','./demo/demo.js'],
         options: {
           specs: 'test/*.js'
         }
