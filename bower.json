@@ -18,9 +18,9 @@
     "temp",
     "demo",
     "lib",
-    "angular-busy.css",
-    "angular-busy.html",
-    "angular-busy.js",
+    "./angular-busy.css",
+    "./angular-busy.html",
+    "./angular-busy.js",
     "Gruntfile.js",
     "package.json",
     "README.md"
