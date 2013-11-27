@@ -76,6 +76,7 @@ angular.module('yourapp').value('cgBusyTemplateName','your_custom_template_here.
 Templates are full, normal Angular partials with access to the scope of where the `cg-busy` was used.
 
 ## Release History
+ * v2.1.0 - Removed work-around for issues in Angular 1.2-rc's.
  * v2.0.0 - Moved to Angular 1.2.0-rc1.
  * v1.0.0 - Added Bower support.
  * v0.1.1 - Updated to Angular 1.1.5 animation syntax.

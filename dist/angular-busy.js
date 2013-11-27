@@ -36,9 +36,7 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 					options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
 					var backdrop = options.backdrop ? '<div class="cg-busy cg-busy-backdrop"></div>' : '';
 
-
-
-					var template = '<div class="cg-busy cg-busy-animation ng-hide">'+ backdrop + indicatorTemplate+'</div>';
+					var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="$cgBusyTracker[\''+options.tracker+'\'].active()">'+ backdrop + indicatorTemplate+'</div>';
 					var templateElement = $compile(template)(scope);
 
 					angular.element(templateElement.children()[options.backdrop?1:0])
@@ -49,41 +47,6 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 						.css('bottom',0);
 
 					element.append(templateElement);
-
-
-                    /****************************************************************
-                    In 1.1.5 I had cg-show="$cgBusyTracker[\''+options.tracker+'\'].active()" in the template
-                    with 1.2.0-rc1 that works but it shows the busy animation when the element is loaded
-                    I dont understand why but the ng-show is triggering an extra watch call than what seems to 
-                    happen with elements that arent compiled and appended like this.  Not sure if this is something 
-                    I'm doing or a bug in angular.
-
-                    To resolve this problem, I basically created my own ng-show that ignores the first auto-triggered
-                    watch expression.  All code below is that
-                    *****************************************************************/
-
-                    /*jslint eqeq: true */
-
-                    function toBoolean(value) {
-                      if (value && value.length !== 0) {
-                        var v = angular.lowercase("" + value);
-                        value = !(v == 'f' || v == '0' || v == 'false' || v == 'no' || v == 'n' || v == '[]');
-                      } else {
-                        value = false;
-                      }
-                      return value;
-                    }
-
-                    var first = true;
-                    scope.$watch('$cgBusyTracker.' + options.tracker + '.active()',function(value){
-                        if (first){
-                            first = false;
-                            return; //ignore first
-                        }
-                        $animate[toBoolean(value) ? 'removeClass' : 'addClass'](templateElement, 'ng-hide');
-                    });
-
-                    /***** end internal ng-show functionality *********************/
 
 				}).error(function(data){
 					throw new Error('Template specified for cgBusy ('+options.template+') could not be loaded. ' + data);

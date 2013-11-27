@@ -30,9 +30,7 @@ describe('cgBusy', function() {
 
     expect(this.element.children().length).toBe(1); //ensure element is added 
 
-    //TODO: now in 1.2.0-rc1 these are failing
-    // expect(this.element.children().css('display')).toBe('block');//ensure its visible (promise is ongoing)
-    // expect(this.element.children().css('display')).toBe('block'); //ensure its still visible
+    expect(this.element.children().css('display')).toBe('block');//ensure its visible (promise is ongoing)
     
     this.testPromise.resolve();
     scope.$apply();
