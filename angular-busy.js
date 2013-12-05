@@ -24,6 +24,17 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 
 				scope.$cgBusyTracker[options.tracker] = promiseTracker(options.tracker);
 
+				if (!scope.message) {
+				    scope.message = {};
+				}
+				scope.message[options.tracker] = "Please wait...";
+
+				attrs.$observe('cgBusyMessage', function (value) {
+				    if (value) {
+				        scope.message[options.tracker] = scope.$eval(value);
+				    }
+				});
+
 				var position = element.css('position');
 				if (position === 'static' || position === '' || typeof position === 'undefined'){
 					element.css('position','relative');
@@ -36,7 +47,9 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 					options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
 					var backdrop = options.backdrop ? '<div class="cg-busy cg-busy-backdrop"></div>' : '';
 
-					var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="$cgBusyTracker[\''+options.tracker+'\'].active()">'+ backdrop + indicatorTemplate+'</div>';
+					var customizedIndicatorTemplate = indicatorTemplate.replace("###", "{{ message['" + options.tracker + "'] }}");
+
+					var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="$cgBusyTracker[\'' + options.tracker + '\'].active()">' + backdrop + customizedIndicatorTemplate + '</div>';
 					var templateElement = $compile(template)(scope);
 
 					angular.element(templateElement.children()[options.backdrop?1:0])
