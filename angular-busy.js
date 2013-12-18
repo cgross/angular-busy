@@ -16,13 +16,27 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 
 				if (typeof options === 'undefined' || typeof options.tracker === 'undefined'){
 					throw new Error('Options for cgBusy directive must be provided (tracker option is required).');
-				}			
+				}
+
+        options.tracker = options.tracker.split(",");
 
 				if (!scope.$cgBusyTracker){
 					scope.$cgBusyTracker = {};
 				}
 
-				scope.$cgBusyTracker[options.tracker] = promiseTracker(options.tracker);
+        angular.forEach(options.tracker, function (tracker) {
+          scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
+        });
+
+        scope.isActive = function() {
+          var active = false;
+          angular.forEach(scope.$cgBusyTracker, function (tracker) {
+            if (tracker.active())
+              active = true;
+          });
+
+          return active;
+        };
 
 				var position = element.css('position');
 				if (position === 'static' || position === '' || typeof position === 'undefined'){
@@ -36,7 +50,7 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 					options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
 					var backdrop = options.backdrop ? '<div class="cg-busy cg-busy-backdrop"></div>' : '';
 
-					var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="$cgBusyTracker[\''+options.tracker+'\'].active()">'+ backdrop + indicatorTemplate+'</div>';
+					var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="isActive()">'+ backdrop + indicatorTemplate+'</div>';
 					var templateElement = $compile(template)(scope);
 
 					angular.element(templateElement.children()[options.backdrop?1:0])
