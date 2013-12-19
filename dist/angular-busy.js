@@ -10,17 +10,17 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 
 				var options = scope.$eval(attrs.cgBusy);
 
-				if (typeof options === 'string'){
+				if (typeof options === 'string' || angular.isArray(options)) {
 					options = {tracker:options};
-				}
+        }
 
 				if (typeof options === 'undefined' || typeof options.tracker === 'undefined'){
 					throw new Error('Options for cgBusy directive must be provided (tracker option is required).');
 				}
 
-        options.tracker = options.tracker.split(",");
+        options.tracker = angular.isArray(options.tracker) ? options.tracker : [options.tracker];
 
-				if (!scope.$cgBusyTracker){
+        if (!scope.$cgBusyTracker){
 					scope.$cgBusyTracker = {};
 				}
 
@@ -59,7 +59,6 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 						.css('left',0)
 						.css('right',0)
 						.css('bottom',0);
-
 					element.append(templateElement);
 
 				}).error(function(data){

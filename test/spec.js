@@ -40,7 +40,7 @@ describe('cgBusy', function() {
 
   it('should show the overlay during multiple promises', function() {
 
-    this.element = compile('<div cg-busy="\'my_tracker,my_tracker2\'"></div>')(scope);
+    this.element = compile('<div cg-busy="[\'my_tracker\',\'my_tracker2\']"></div>')(scope);
     angular.element('body').append(this.element);
 
     this.testPromise = q.defer();
