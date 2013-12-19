@@ -58,7 +58,7 @@ or this:
 <div cg-busy="{tracker:'my_tracker',backdrop:false,template:'myAwesomeTemplate.html'}"></div>
 ```
 
-* `tracker` - Required. The name of the promise tracker.
+* `tracker` - Required. The name(s) of the promise tracker.  May either be a string or an array of strings if you wish to use the same indicator for multiple promises/trackers.
 * `backdrop` - Optional. Boolean, default is true. If true a faded backdrop will be shown behind the progress indicator.
 * `template` - Optional.  If provided, the given template will be shown in place of the default progress 
 indicatory template. Use this to override the default UI and provide your own.
