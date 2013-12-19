@@ -10,33 +10,34 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 
 				var options = scope.$eval(attrs.cgBusy);
 
-				if (typeof options === 'string' || angular.isArray(options)) {
+				if (angular.isString(options) || angular.isArray(options)) {
 					options = {tracker:options};
-        }
+				}
 
-				if (typeof options === 'undefined' || typeof options.tracker === 'undefined'){
+				if (angular.isUndefined(options) || angular.isUndefined(options.tracker)){
 					throw new Error('Options for cgBusy directive must be provided (tracker option is required).');
 				}
 
-        options.tracker = angular.isArray(options.tracker) ? options.tracker : [options.tracker];
+				options.tracker = angular.isArray(options.tracker) ? options.tracker : [options.tracker];
 
-        if (!scope.$cgBusyTracker){
+				if (!scope.$cgBusyTracker){
 					scope.$cgBusyTracker = {};
 				}
 
-        angular.forEach(options.tracker, function (tracker) {
-          scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
-        });
+				angular.forEach(options.tracker, function (tracker) {
+					scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
+				});
 
-        scope.isActive = function() {
-          var active = false;
-          angular.forEach(scope.$cgBusyTracker, function (tracker) {
-            if (tracker.active())
-              active = true;
-          });
+				scope.isActive = function() {
+					var active = false;
+					angular.forEach(scope.$cgBusyTracker, function (tracker) {
+						if (tracker.active()) {
+							active = true;
+						}
+					});
 
-          return active;
-        };
+					return active;
+				};
 
 				var position = element.css('position');
 				if (position === 'static' || position === '' || typeof position === 'undefined'){
@@ -67,5 +68,5 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 			}
 		};
 	}
-]);
+	]);
 

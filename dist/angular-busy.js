@@ -10,33 +10,34 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 
 				var options = scope.$eval(attrs.cgBusy);
 
-				if (typeof options === 'string' || angular.isArray(options)) {
+				if (angular.isString(options) || angular.isArray(options)) {
 					options = {tracker:options};
-        }
+				}
 
-				if (typeof options === 'undefined' || typeof options.tracker === 'undefined'){
+				if (angular.isUndefined(options) || angular.isUndefined(options.tracker)){
 					throw new Error('Options for cgBusy directive must be provided (tracker option is required).');
 				}
 
-        options.tracker = angular.isArray(options.tracker) ? options.tracker : [options.tracker];
+				options.tracker = angular.isArray(options.tracker) ? options.tracker : [options.tracker];
 
-        if (!scope.$cgBusyTracker){
+				if (!scope.$cgBusyTracker){
 					scope.$cgBusyTracker = {};
 				}
 
-        angular.forEach(options.tracker, function (tracker) {
-          scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
-        });
+				angular.forEach(options.tracker, function (tracker) {
+					scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
+				});
 
-        scope.isActive = function() {
-          var active = false;
-          angular.forEach(scope.$cgBusyTracker, function (tracker) {
-            if (tracker.active())
-              active = true;
-          });
+				scope.isActive = function() {
+					var active = false;
+					angular.forEach(scope.$cgBusyTracker, function (tracker) {
+						if (tracker.active()) {
+							active = true;
+						}
+					});
 
-          return active;
-        };
+					return active;
+				};
 
 				var position = element.css('position');
 				if (position === 'static' || position === '' || typeof position === 'undefined'){
@@ -67,57 +68,34 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 			}
 		};
 	}
-]);
+	]);
 
 
 angular.module("cgBusy").run(["$templateCache", function($templateCache) {
 
   $templateCache.put("angular-busy.html",
-    "<div class=\"cg-busy-default-wrapper\">\r" +
+    "<div class=\"cg-busy-default-wrapper\">\n" +
     "\n" +
-    "\r" +
+    "   <div class=\"cg-busy-default-sign\">\n" +
     "\n" +
-    "   <div class=\"cg-busy-default-sign\">\r" +
+    "      <div class=\"cg-busy-default-spinner\">\n" +
+    "         <div class=\"bar1\"></div>\n" +
+    "         <div class=\"bar2\"></div>\n" +
+    "         <div class=\"bar3\"></div>\n" +
+    "         <div class=\"bar4\"></div>\n" +
+    "         <div class=\"bar5\"></div>\n" +
+    "         <div class=\"bar6\"></div>\n" +
+    "         <div class=\"bar7\"></div>\n" +
+    "         <div class=\"bar8\"></div>\n" +
+    "         <div class=\"bar9\"></div>\n" +
+    "         <div class=\"bar10\"></div>\n" +
+    "         <div class=\"bar11\"></div>\n" +
+    "         <div class=\"bar12\"></div>\n" +
+    "      </div>\n" +
     "\n" +
-    "\r" +
+    "      <div class=\"cg-busy-default-text\">Please Wait...</div>\n" +
     "\n" +
-    "      <div class=\"cg-busy-default-spinner\">\r" +
-    "\n" +
-    "         <div class=\"bar1\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar2\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar3\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar4\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar5\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar6\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar7\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar8\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar9\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar10\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar11\"></div>\r" +
-    "\n" +
-    "         <div class=\"bar12\"></div>\r" +
-    "\n" +
-    "      </div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "      <div class=\"cg-busy-default-text\">Please Wait...</div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "   </div>\r" +
-    "\n" +
-    "\r" +
+    "   </div>\n" +
     "\n" +
     "</div>"
   );
