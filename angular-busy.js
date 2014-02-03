@@ -25,17 +25,20 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 				}
 
 				angular.forEach(options.tracker, function (tracker) {
-					scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
+					scope.$cgBusyTracker[tracker] = promiseTracker.register(tracker);
 				});
 
-				scope.isActive = function() {
+				//multiple cg-busy's can be active in the same scope so we have to be careful not to overwrite the
+				//same isActive function.  So lets name it uniquely by the trackers its watching.
+				var isActiveFnName = 'isActive_' + options.tracker.join('_');
+
+				scope[isActiveFnName] = function() {
 					var active = false;
-					angular.forEach(scope.$cgBusyTracker, function (tracker) {
-						if (tracker.active()) {
+					angular.forEach(options.tracker, function (tracker) {
+						if (scope.$cgBusyTracker[tracker].active()) {
 							active = true;
 						}
 					});
-
 					return active;
 				};
 
@@ -51,7 +54,7 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 					options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
 					var backdrop = options.backdrop ? '<div class="cg-busy cg-busy-backdrop"></div>' : '';
 
-					var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="isActive()">'+ backdrop + indicatorTemplate+'</div>';
+					var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="'+isActiveFnName+'()">'+ backdrop + indicatorTemplate+'</div>';
 					var templateElement = $compile(template)(scope);
 
 					angular.element(templateElement.children()[options.backdrop?1:0])

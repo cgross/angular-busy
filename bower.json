@@ -1,13 +1,13 @@
 {
   "name": "angular-busy",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "main": [
     "dist/angular-busy.js",
     "dist/angular-busy.css"
   ],
   "dependencies": {
     "angular": "~1.2",
-    "angular-promise-tracker": "~1.4",
+    "angular-promise-tracker": "~2.0",
     "angular-animate": "~1.2"
   },
   "ignore": [
