@@ -76,6 +76,7 @@ angular.module('yourapp').value('cgBusyTemplateName','your_custom_template_here.
 Templates are full, normal Angular partials with access to the scope of where the `cg-busy` was used.
 
 ## Release History
+ * v3.0.0 - Support for new promise-tracker api.  Fix for multiple cg-busy's on the same scope.
  * v2.2.0 - Support for multiple trackers per indicator.
  * v2.1.0 - Removed work-around for issues in Angular 1.2-rc's.
  * v2.0.0 - Moved to Angular 1.2.0-rc1.
