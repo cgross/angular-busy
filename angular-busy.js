@@ -25,7 +25,12 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 				}
 
 				angular.forEach(options.tracker, function (tracker) {
-					scope.$cgBusyTracker[tracker] = promiseTracker(tracker) ? promiseTracker(tracker) : promiseTracker.register(tracker);
+					scope.$cgBusyTracker[tracker] = null;
+					try {
+						scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
+					} catch(error) {
+						scope.$cgBusyTracker[tracker] = promiseTracker.register(tracker);
+					}
 				});
 
 				//multiple cg-busy's can be active in the same scope so we have to be careful not to overwrite the
