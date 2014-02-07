@@ -25,7 +25,8 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 				}
 
 				angular.forEach(options.tracker, function (tracker) {
-					scope.$cgBusyTracker[tracker] = null;
+					// Checking for a non-existent tracker throws an exception,
+					// so we check for one first, then register it if it doesn't exist yet
 					try {
 						scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
 					} catch(error) {
