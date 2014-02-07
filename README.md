@@ -2,9 +2,9 @@
 
 > Show busy/loading indicators on any element during $http requests (or any promise).
 
-This library depends on [Andy Joslin's angular-promise-tracker](https://github.com/ajoslin/angular-promise-tracker).  
+This library depends on [Andy Joslin's angular-promise-tracker](https://github.com/ajoslin/angular-promise-tracker).
 
-Annotate an `$http` request using `angular-promise-tracker` and add `cg-busy` on an element to display a busy 
+Annotate an `$http` request using `angular-promise-tracker` and add `cg-busy` on an element to display a busy
 indication on a specific element during the `$http` request.
 
 This library builds on Angular 1.2 and the new Angular animate module in `animate.js`.
@@ -31,7 +31,7 @@ Add the promise trackers as you normally would using `angular-promise-tracker`:
 function MyCtrl($scope) {
 
   $scope.pizzaFlavor = $http.get('/pizzaFlavor', { tracker: 'pizza' });
-  
+
 }
 ```
 
@@ -43,7 +43,7 @@ Add `cg-busy` to the elements you wish to be _busy_ during those requests:
 
 ## Options
 
-The `cg-busy` directive expects a value that is interpreted as an expression.  The value may be specified as an object literal 
+The `cg-busy` directive expects a value that is interpreted as an expression.  The value may be specified as an object literal
  or simply as a string if only the `tracker` value is provided.
 
 In other words.  You may do this:
@@ -60,13 +60,13 @@ or this:
 
 * `tracker` - Required. The name(s) of the promise tracker.  May either be a string or an array of strings if you wish to use the same indicator for multiple promises/trackers.
 * `backdrop` - Optional. Boolean, default is true. If true a faded backdrop will be shown behind the progress indicator.
-* `template` - Optional.  If provided, the given template will be shown in place of the default progress 
+* `template` - Optional.  If provided, the given template will be shown in place of the default progress
 indicatory template. Use this to override the default UI and provide your own.
 
 ## Providing Custom Templates
 
-The default progress template shows a spinner and a 'Please Wait...' message.  But you can define custom templates per instance 
-(as shown above) or change the global default template.  To change the global default template just provide a new 
+The default progress template shows a spinner and a 'Please Wait...' message.  But you can define custom templates per instance
+(as shown above) or change the global default template.  To change the global default template just provide a new
 `$injector` value for `cgBusyTemplateName`.  Ex:
 
  ```js
@@ -76,6 +76,7 @@ angular.module('yourapp').value('cgBusyTemplateName','your_custom_template_here.
 Templates are full, normal Angular partials with access to the scope of where the `cg-busy` was used.
 
 ## Release History
+ * v3.0.1 - Fix for using cg-busy when a tracker has already been registered.
  * v3.0.0 - Support for new promise-tracker api.  Fix for multiple cg-busy's on the same scope.
  * v2.2.0 - Support for multiple trackers per indicator.
  * v2.1.0 - Removed work-around for issues in Angular 1.2-rc's.
