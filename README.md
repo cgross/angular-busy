@@ -2,7 +2,7 @@
 
 > Show busy/loading indicators on any element during $http requests (or any promise).
 
-This library depends on [Andy Joslin's angular-promise-tracker](https://github.com/ajoslin/angular-promise-tracker).
+This library depends on v1.5 of [Andy Joslin's angular-promise-tracker](https://github.com/ajoslin/angular-promise-tracker).
 
 Annotate an `$http` request using `angular-promise-tracker` and add `cg-busy` on an element to display a busy
 indication on a specific element during the `$http` request.
@@ -76,6 +76,7 @@ angular.module('yourapp').value('cgBusyTemplateName','your_custom_template_here.
 Templates are full, normal Angular partials with access to the scope of where the `cg-busy` was used.
 
 ## Release History
+ * v3.0.2 - Reverting back to promise-tracker v1.5 due to changes in the api.
  * v3.0.1 - Fix for using cg-busy when a tracker has already been registered.
  * v3.0.0 - Support for new promise-tracker api.  Fix for multiple cg-busy's on the same scope.
  * v2.2.0 - Support for multiple trackers per indicator.
