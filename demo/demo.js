@@ -1,18 +1,16 @@
-angular.module('app', ['ngAnimate','ajoslin.promise-tracker','cgBusy']);
+angular.module('app', ['ngAnimate', 'cgBusy']);
 
-angular.module('app').controller('DemoCtrl',function($scope,promiseTracker,$q,$timeout){
+angular.module('app').controller('DemoCtrl', function($scope, $q, $timeout, cgBusyTrackers) {
 
-	$scope.delay1 = $scope.delay2 = 2000;
+    $scope.delay1 = $scope.delay2 = 2000;
 
-	$scope.demoBusy = function(trackerName,delay){
+    $scope.demoBusy = function(trackerName, delay) {
 
-		//For the demo we're using a simple promise not $http since thats easier to control
-		var testPromise = $q.defer();
-		promiseTracker(trackerName).addPromise(testPromise.promise);
-		$timeout(function(){
-			testPromise.resolve();
-		},delay);
-
-	};
-
+        //For the demo we're using a simple promise not $http since thats easier to control
+        var testPromise = $q.defer();
+        cgBusyTrackers.getPromiseTracker(trackerName).addPromise(testPromise.promise);
+        $timeout(function() {
+            testPromise.resolve();
+        }, delay);
+    };
 });

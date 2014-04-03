@@ -2,8 +2,34 @@ angular.module('cgBusy',['ajoslin.promise-tracker']);
 
 angular.module('cgBusy').value('cgBusyTemplateName','angular-busy.html');
 
-angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templateCache','cgBusyTemplateName','$http','$animate',
-	function(promiseTracker,$compile,$templateCache,cgBusyTemplateName,$http,$animate){
+// angular.module('cgBusy').value('cgBusyTrackers', {});
+angular.module('cgBusy').factory('cgBusyTrackers', [
+
+    function() {
+        var trackersObject = {};
+
+        // To add promise-tracker 
+        var addTracker = function(tracker, promiseTracker) {
+            trackersObject[tracker] = promiseTracker;
+        }
+
+        var getPromiseTracker = function(tracker) {
+            // if (angular.isUndefined(trackersObject[tracker])) {
+            //     console.log('Tracker: ' + tracker + 'not initialized.');
+            // }
+            return trackersObject[tracker];
+        }
+
+        return {
+            _trackersObject: trackersObject,
+            addTracker: addTracker,
+            getPromiseTracker: getPromiseTracker
+        }
+    }
+]);
+
+angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templateCache','cgBusyTemplateName','$http','$animate','cgBusyTrackers',
+	function(promiseTracker,$compile,$templateCache,cgBusyTemplateName,$http,$animate,cgBusyTrackers){
 		return {
 			restrict: 'A',
 			link: function(scope, element, attrs, fn) {
@@ -20,18 +46,18 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 
 				options.tracker = angular.isArray(options.tracker) ? options.tracker : [options.tracker];
 
-				if (!scope.$cgBusyTracker){
-					scope.$cgBusyTracker = {};
-				}
-
 				angular.forEach(options.tracker, function (tracker) {
-					// Checking for a non-existent tracker throws an exception,
-					// so we check for one first, then register it if it doesn't exist yet
-					try {
-						scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
-					} catch(error) {
-						scope.$cgBusyTracker[tracker] = promiseTracker.register(tracker);
-					}
+					if (cgBusyTrackers.getPromiseTracker(tracker) === undefined) {
+                        // Create promiseTracker for tracker 
+                        cgBusyTrackers.addTracker(
+                            tracker,
+                            promiseTracker({
+                                // TODO: following parameters should be configurable
+                                activationDelay: 0,
+                                minDuration: 0
+                            })
+                        );
+                    }
 				});
 
 				//multiple cg-busy's can be active in the same scope so we have to be careful not to overwrite the
@@ -41,9 +67,12 @@ angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templ
 				scope[isActiveFnName] = function() {
 					var active = false;
 					angular.forEach(options.tracker, function (tracker) {
-						if (scope.$cgBusyTracker[tracker].active()) {
-							active = true;
-						}
+						if (!angular.isUndefined(cgBusyTrackers.getPromiseTracker(tracker))) {
+                            // If tracker is not available then no need to check active status
+                            if (cgBusyTrackers.getPromiseTracker(tracker).active()) {
+                                active = true;
+                            }
+                        }
 					});
 					return active;
 				};
