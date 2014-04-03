@@ -2,13 +2,13 @@ describe('cgBusy', function() {
 
   beforeEach(module('app'));
 
-  var scope,compile,q,_promiseTracker,httpBackend;
+  var scope,compile,q,cgBusyTrackers,httpBackend;
 
-  beforeEach(inject(function($rootScope,$compile,$q,promiseTracker,$httpBackend,$templateCache) {
+  beforeEach(inject(function($rootScope,$compile,$q,$httpBackend,$templateCache,$timeout,cgBusyTrackers) {
     scope = $rootScope.$new();
     compile = $compile;
     q = $q;
-    _promiseTracker = promiseTracker;
+    _cgBusyTrackers = cgBusyTrackers;
     httpBackend = $httpBackend;
     httpBackend.whenGET('test-custom-template.html').respond(function(method, url, data, headers){
 
@@ -22,7 +22,7 @@ describe('cgBusy', function() {
     angular.element('body').append(this.element);
 
     this.testPromise = q.defer();
-    _promiseTracker('my_tracker').addPromise(this.testPromise.promise);
+    _cgBusyTrackers.getPromiseTracker('my_tracker').addPromise(this.testPromise.promise);
 
     //httpBackend.flush(); 
 
@@ -44,10 +44,10 @@ describe('cgBusy', function() {
     angular.element('body').append(this.element);
 
     this.testPromise = q.defer();
-    _promiseTracker('my_tracker').addPromise(this.testPromise.promise);
+    _cgBusyTrackers.getPromiseTracker('my_tracker').addPromise(this.testPromise.promise);
 
     this.testPromise2 = q.defer();
-    _promiseTracker('my_tracker2').addPromise(this.testPromise2.promise);
+    _cgBusyTrackers.getPromiseTracker('my_tracker2').addPromise(this.testPromise2.promise);
 
     //httpBackend.flush();
 
