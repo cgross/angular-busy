@@ -2,13 +2,12 @@ describe('cgBusy', function() {
 
   beforeEach(module('app'));
 
-  var scope,compile,q,_promiseTracker,httpBackend;
+  var scope,compile,q,httpBackend;
 
-  beforeEach(inject(function($rootScope,$compile,$q,promiseTracker,$httpBackend,$templateCache) {
+  beforeEach(inject(function($rootScope,$compile,$q,$httpBackend,$templateCache) {
     scope = $rootScope.$new();
     compile = $compile;
     q = $q;
-    _promiseTracker = promiseTracker;
     httpBackend = $httpBackend;
     httpBackend.whenGET('test-custom-template.html').respond(function(method, url, data, headers){
 
@@ -18,20 +17,20 @@ describe('cgBusy', function() {
 
   it('should show the overlay during promise', function() {
 
-    this.element = compile('<div cg-busy="\'my_tracker\'"></div>')(scope);
+    this.element = compile('<div cg-busy="my_promise"></div>')(scope);
     angular.element('body').append(this.element);
 
     this.testPromise = q.defer();
-    _promiseTracker('my_tracker').addPromise(this.testPromise.promise);
+    scope.my_promise = this.testPromise.promise;
 
-    //httpBackend.flush(); 
+    //httpBackend.flush();
 
-    scope.$apply(); 
+    scope.$apply();
 
-    expect(this.element.children().length).toBe(1); //ensure element is added 
+    expect(this.element.children().length).toBe(1); //ensure element is added
 
     expect(this.element.children().css('display')).toBe('block');//ensure its visible (promise is ongoing)
-    
+
     this.testPromise.resolve();
     scope.$apply();
 
@@ -40,14 +39,14 @@ describe('cgBusy', function() {
 
   it('should show the overlay during multiple promises', function() {
 
-    this.element = compile('<div cg-busy="[\'my_tracker\',\'my_tracker2\']"></div>')(scope);
+    this.element = compile('<div cg-busy="[my_promise,my_promise2]"></div>')(scope);
     angular.element('body').append(this.element);
 
     this.testPromise = q.defer();
-    _promiseTracker('my_tracker').addPromise(this.testPromise.promise);
+    scope.my_promise = this.testPromise.promise;
 
     this.testPromise2 = q.defer();
-    _promiseTracker('my_tracker2').addPromise(this.testPromise2.promise);
+    scope.my_promise2 = this.testPromise2.promise;
 
     //httpBackend.flush();
 
@@ -69,12 +68,12 @@ describe('cgBusy', function() {
 
   it('should load custom templates', function(){
 
-    this.element = compile('<div cg-busy="{tracker:\'my_tracker\',template:\'test-custom-template.html\'}"></div>')(scope);
+    this.element = compile('<div cg-busy="{promise:my_promise,templateUrl:\'test-custom-template.html\'}"></div>')(scope);
     angular.element('body').append(this.element);
 
-    httpBackend.flush(); 
+    httpBackend.flush();
 
-    scope.$apply(); 
+    scope.$apply();
 
     expect(angular.element('#custom').html()).toBe('test-custom-template-contents');
 

@@ -54,13 +54,14 @@
 
 /* All styles below are for the default template. */
 
+.cg-busy-default-wrapper {
+	text-align:center;
+}
+
 .cg-busy-default-sign{
-	position:absolute;
-	top:0;
-	left:50%;
-	margin-left:-100px;
-	width:170px;
-	height:50px;
+	display: inline-block;
+	position:relative;
+	padding-bottom: 6px;
 	color:#333333;
 	text-shadow:0 1px 1px rgba(255, 255, 255, 0.75);
 	background-color:#e9eeee;
@@ -76,11 +77,11 @@
 	box-shadow:inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
 }
 .cg-busy-default-text{
-	position:absolute;
-	left:49px;
-	top:15px;
+	margin:13px 12px 6px 49px;
 	font-size:16px;
 	color:#555;
+	text-align: left;
+	max-width: 400px;
 }
 .cg-busy-default-spinner{
 	position:absolute;

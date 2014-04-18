@@ -5,145 +5,121 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="../dist/angular-busy.css" rel="stylesheet">
+  <link href="gh-fork-ribbon.css" rel="stylesheet">
 
 </head>
-<body ng-controller="DemoCtrl" style="padding-top:50px">
+<body ng-controller="DemoCtrl" style="padding-top:0px">
 
   <div>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="#">Title</a>
-          <ul class="nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-          </ul>
-        </div>
+    <div class="github-fork-ribbon-wrapper right">
+      <div class="github-fork-ribbon">
+        <a href="https://github.com/cgross/angular-busy">Star on GitHub</a>
       </div>
     </div>
 
     <div class="container">
       <div class="row">
 
-        <div class="span4">
-
-          <form>
-            <fieldset>
-              <legend>Demo</legend>
-              <label>Busy Time (ms)</label>
-              <input type="text" ng-model="delay1">
-              <br/>
-              <button class="btn" ng-click="demoBusy('demo1',delay1)">Try It</button>
-            </fieldset>
-          </form>
-
-
-
-        </div>
-
-        <div class="span8">
-
-          <table class="table table-bordered" cg-busy="{tracker:'demo1'}">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td rowspan="2">1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@TwBootstrap</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="col-md-12">
+            <h2>angular-busy</h2>
+            <p class="lead">Show busy/loading indicators on any $http or $resource request, or on any promise.</p>
         </div>
 
       </div>
 
       <div class="row">
 
-        <div class="span4">
+        <div class="col-md-4">
 
-          <form>
-            <fieldset>
-              <legend>Custom Template</legend>
-              <label>Busy Time (ms)</label>
-              <input type="text" ng-model="delay2">
-              <br/>
-              <button class="btn" ng-click="demoBusy('demo2',delay2)">Try It</button>
-            </fieldset>
+          <form class="form-horizontal" role="form">
+            <legend>Demo Options</legend>
+            <div class="form-group">
+              <label for="delayInput" class="col-sm-5 control-label">Delay (ms)</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="delayInput" ng-model="delay">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="durationInput" class="col-sm-5 control-label">Min Duration (ms)</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="durationInput" ng-model="minDuration">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="message" class="col-sm-5 control-label">Message</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="message" ng-model="message">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-5 col-sm-5">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" ng-model="backdrop"> Show Backdrop
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="template" class="col-sm-5 control-label">Template Url</label>
+              <div class="col-sm-7">
+                <select class="form-control" id="template" ng-model="templateUrl">
+                  <option value=''>Standard</option>
+                  <option value='custom-template.html'>custom-template.html</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-offset-5 col-sm-7" style="padding-right:0px">
+              <button class="btn btn-default pull-right" ng-click="demo()">Demo</button>
+            </div>
           </form>
-
-
 
         </div>
 
-        <div class="span8">
+        <div class="col-md-offset-1 col-md-7" style="padding-top:28px">
 
-          <table class="table table-bordered" cg-busy="{tracker:'demo2',template:'custom-template.html'}">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td rowspan="2">1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@TwBootstrap</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
+          <div cg-busy="{promise:promise,templateUrl:templateUrl,message:message,backdrop:backdrop,delay:delay,minDuration:minDuration}">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="2">1</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@TwBootstrap</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </div>
-
-
 
     </div>
 
@@ -152,7 +128,6 @@
 
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../bower_components/angular-animate/angular-animate.js"></script>
-  <script src="../bower_components/angular-promise-tracker/promise-tracker.js"></script>
   <script src="../dist/angular-busy.js"></script>
   <script src="demo.js"></script>
 
