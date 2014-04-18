@@ -1,79 +1,203 @@
-angular.module('cgBusy',['ajoslin.promise-tracker']);
+angular.module('cgBusy',[]);
 
-angular.module('cgBusy').value('cgBusyTemplateName','angular-busy.html');
+//loosely modeled after angular-promise-tracker
+angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout',function($timeout){
 
-angular.module('cgBusy').directive('cgBusy',['promiseTracker','$compile','$templateCache','cgBusyTemplateName','$http','$animate',
-	function(promiseTracker,$compile,$templateCache,cgBusyTemplateName,$http,$animate){
+	return function(){
+
+		var tracker = {};
+		tracker.promises = [];
+		tracker.delayPromise = null;
+		tracker.durationPromise = null;
+
+		tracker.reset = function(options){
+			tracker.minDuration = options.minDuration;
+
+			tracker.promises = [];
+			angular.forEach(options.promises,function(p){
+				if (!p || p.$cgBusyFulfilled) {
+					return;
+				}
+				addPromiseLikeThing(p);
+			});
+
+			if (tracker.promises.length === 0) {
+				//if we have no promises then dont do the delay or duration stuff
+				return;
+			}
+
+			if (options.delay > 0) {
+				tracker.delayPromise = $timeout(function(){
+					tracker.delayPromise = null;
+					if (options.minDuration) {
+						tracker.durationPromise = $timeout(function(){
+							tracker.durationPromise = null;
+						},options.minDuration);
+					}
+				},options.delay);
+			}
+		};
+
+		tracker.getThen = function(promise){
+			var then = promise && (promise.then || promise.$then ||
+	        	(promise.$promise && promise.$promise.then));
+
+			return then;
+		};
+
+		var addPromiseLikeThing = function(promise){
+			var then = tracker.getThen(promise);
+
+			if (!then) {
+				throw new Error('cgBusy expects a promise (or something that has a .promise or .$promise');
+			}
+
+			if (tracker.promises.indexOf(promise) !== -1){
+				return;
+			}
+			tracker.promises.push(promise);
+
+			then(function(){
+				promise.$cgBusyFulfilled = true;
+				if (tracker.promises.indexOf(promise) === -1) {
+					return;
+				}
+				tracker.promises.splice(tracker.promises.indexOf(promise),1);
+			},function(){
+				promise.$cgBusyFulfilled = true;
+				if (tracker.promises.indexOf(promise) === -1) {
+					return;
+				}
+				tracker.promises.splice(tracker.promises.indexOf(promise),1);
+			});
+		};
+
+		tracker.active = function(){
+			if (tracker.delayPromise){
+				return false;
+			}
+			if (tracker.durationPromise){
+				return true;
+			}
+			return tracker.promises.length > 0;
+		};
+
+		return tracker;
+
+	};
+}]);
+
+angular.module('cgBusy').value('cgBusyDefaults',{});
+
+angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusyDefaults','$http','_cgBusyTrackerFactory',
+	function($compile,$templateCache,cgBusyDefaults,$http,_cgBusyTrackerFactory){
 		return {
 			restrict: 'A',
 			link: function(scope, element, attrs, fn) {
 
-				var options = scope.$eval(attrs.cgBusy);
-
-				if (angular.isString(options) || angular.isArray(options)) {
-					options = {tracker:options};
-				}
-
-				if (angular.isUndefined(options) || angular.isUndefined(options.tracker)){
-					throw new Error('Options for cgBusy directive must be provided (tracker option is required).');
-				}
-
-				options.tracker = angular.isArray(options.tracker) ? options.tracker : [options.tracker];
-
-				if (!scope.$cgBusyTracker){
-					scope.$cgBusyTracker = {};
-				}
-
-				angular.forEach(options.tracker, function (tracker) {
-					// Checking for a non-existent tracker throws an exception,
-					// so we check for one first, then register it if it doesn't exist yet
-					try {
-						scope.$cgBusyTracker[tracker] = promiseTracker(tracker);
-					} catch(error) {
-						scope.$cgBusyTracker[tracker] = promiseTracker.register(tracker);
-					}
-				});
-
-				//multiple cg-busy's can be active in the same scope so we have to be careful not to overwrite the
-				//same isActive function.  So lets name it uniquely by the trackers its watching.
-				var isActiveFnName = 'isActive_' + options.tracker.join('_');
-
-				scope[isActiveFnName] = function() {
-					var active = false;
-					angular.forEach(options.tracker, function (tracker) {
-						if (scope.$cgBusyTracker[tracker].active()) {
-							active = true;
-						}
-					});
-					return active;
-				};
-
+				//Apply position:relative to parent element if necessary
 				var position = element.css('position');
 				if (position === 'static' || position === '' || typeof position === 'undefined'){
 					element.css('position','relative');
 				}
 
-				var indicatorTemplateName = options.template ? options.template : cgBusyTemplateName;
+				var templateElement;
+				var currentTemplate;
+				var templateScope;
+				var backdrop;
+				var tracker = _cgBusyTrackerFactory();
 
-				$http.get(indicatorTemplateName,{cache: $templateCache}).success(function(indicatorTemplate){
+				var defaults = {
+					templateUrl: 'angular-busy.html',
+					delay:0,
+					minDuration:0,
+					backdrop: true,
+					message:'Please Wait...'
+				};
 
-					options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
-					var backdrop = options.backdrop ? '<div class="cg-busy cg-busy-backdrop"></div>' : '';
+				angular.extend(defaults,cgBusyDefaults);
 
-					var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="'+isActiveFnName+'()">'+ backdrop + indicatorTemplate+'</div>';
-					var templateElement = $compile(template)(scope);
+				scope.$watchCollection(attrs.cgBusy,function(options){
 
-					angular.element(templateElement.children()[options.backdrop?1:0])
-						.css('position','absolute')
-						.css('top',0)
-						.css('left',0)
-						.css('right',0)
-						.css('bottom',0);
-					element.append(templateElement);
+					if (!options) {
+						options = {promise:null};
+					}
 
-				}).error(function(data){
-					throw new Error('Template specified for cgBusy ('+options.template+') could not be loaded. ' + data);
-				});
+					if (angular.isString(options)) {
+						throw new Error('Invalid value for cg-busy.  cgBusy no longer accepts string ids to represent promises/trackers.');
+					}
+
+					//is it an array (of promises) or one promise
+					if (angular.isArray(options) || tracker.getThen(options)) {
+						options = {promise:options};
+					}
+
+					options = angular.extend(angular.copy(defaults),options);
+
+					if (!options.templateUrl){
+						options.templateUrl = defaults.templateUrl;
+					}
+
+					if (!angular.isArray(options.promise)){
+						options.promise = [options.promise];
+					}
+
+					// options.promise = angular.isArray(options.promise) ? options.promise : [options.promise];
+					// options.message = options.message ? options.message : 'Please Wait...';
+					// options.template = options.template ? options.template : cgBusyTemplateName;
+					// options.minDuration = options.minDuration ? options.minDuration : 0;
+					// options.delay = options.delay ? options.delay : 0;
+
+					if (!templateScope) {
+						templateScope = scope.$new();
+					}
+
+					templateScope.$message = options.message;
+
+					if (!angular.equals(tracker.promises,options.promise)) {
+						tracker.reset({
+							promises:options.promise,
+							delay:options.delay,
+							minDuration: options.minDuration
+						});
+					}
+
+					templateScope.$cgBusyIsActive = function() {
+						return tracker.active();
+					};
+
+
+					if (!templateElement || currentTemplate !== options.templateUrl || backdrop !== options.backdrop) {
+
+						if (templateElement) {
+							templateElement.remove();
+						}
+
+						currentTemplate = options.templateUrl;
+						backdrop = options.backdrop;
+
+						$http.get(currentTemplate,{cache: $templateCache}).success(function(indicatorTemplate){
+
+							options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
+							var backdrop = options.backdrop ? '<div class="cg-busy cg-busy-backdrop"></div>' : '';
+
+							var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="$cgBusyIsActive()">'+ backdrop + indicatorTemplate+'</div>';
+							templateElement = $compile(template)(templateScope);
+
+							angular.element(templateElement.children()[options.backdrop?1:0])
+								.css('position','absolute')
+								.css('top',0)
+								.css('left',0)
+								.css('right',0)
+								.css('bottom',0);
+							element.append(templateElement);
+
+						}).error(function(data){
+							throw new Error('Template specified for cgBusy ('+options.templateUrl+') could not be loaded. ' + data);
+						});
+					}
+
+				},true);
 			}
 		};
 	}

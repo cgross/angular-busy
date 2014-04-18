@@ -1,15 +1,6 @@
 # angular-busy [![Build Status](https://travis-ci.org/cgross/angular-busy.png?branch=master)](https://travis-ci.org/cgross/angular-busy)
 
-> Show busy/loading indicators on any element during $http requests (or any promise).
-
-This library depends on v1.5 of [Andy Joslin's angular-promise-tracker](https://github.com/ajoslin/angular-promise-tracker).
-
-Annotate an `$http` request using `angular-promise-tracker` and add `cg-busy` on an element to display a busy
-indication on a specific element during the `$http` request.
-
-This library builds on Angular 1.2 and the new Angular animate module in `animate.js`.
-
-Supports IE 10, and recent versions of FF and Chrome.
+> Show busy/loading indicators on any $http or $resource request, or on any promise.
 
 ## Demo
 
@@ -17,65 +8,94 @@ Supports IE 10, and recent versions of FF and Chrome.
 
 ## Getting Started
 
-Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.  Also add the `angular-promise-tracker` files as necessary.
+Install with Bower or download the the files directly from the dist folder in the repo.
 
-Add `cgBusy` as a module dependency for your module (in addition to `ajoslin.promise-tracker` and the Angular 1.2 `ngAnimate` module):
-
-```js
-angular.module('your_app', ['ngAnimate','ajoslin.promise-tracker','cgBusy']);
+```bash
+bower install angular-busy --save
 ```
 
-Add the promise trackers as you normally would using `angular-promise-tracker`:
+Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.
+
+Add `cgBusy` as a module dependency for your module.
 
 ```js
-function MyCtrl($scope) {
+angular.module('your_app', ['cgBusy']);
+```
 
-  $scope.pizzaFlavor = $http.get('/pizzaFlavor', { tracker: 'pizza' });
+Add your promise to $scope and reference that in the `cg-busy` directive:
+
+```js
+function MyCtrl($scope,$http,User) {
+
+  //using $http
+  $scope.myPromise = $http.get('...');
+
+  //if you have a User class based on $resource
+  $scope.myPromise = User.$save();
 
 }
 ```
 
-Add `cg-busy` to the elements you wish to be _busy_ during those requests:
-
 ```html
-<div cg-busy="'pizza'"></div>
+<!-- Use the simple syntax -->
+<div cg-busy="myPromise"></div>
+
+<!-- Use the advanced syntax -->
+<div cg-busy="{promise:myPromise,message:'Loading Your Data',templateUrl:'mycustomtemplate.html'}"></div>
 ```
 
 ## Options
 
-The `cg-busy` directive expects a value that is interpreted as an expression.  The value may be specified as an object literal
- or simply as a string if only the `tracker` value is provided.
+The `cg-busy` directive expects either a promise or a configuration object.
 
 In other words.  You may do this:
 
 ```html
-<div cg-busy="'my_tracker'"></div> <!-- Notice the extra single quotes because its an expression -->
+<div cg-busy="myPromise"></div>
 ```
 
 or this:
 
 ```html
-<div cg-busy="{tracker:'my_tracker',backdrop:false,template:'myAwesomeTemplate.html'}"></div>
+<div cg-busy="{promise:myPromise,message:'Loading',backdrop:false,templateUrl:'myAwesomeTemplate.html',delay:300,minDuration:700}"></div>
 ```
 
-* `tracker` - Required. The name(s) of the promise tracker.  May either be a string or an array of strings if you wish to use the same indicator for multiple promises/trackers.
+* `promise` - Required. The promise (or array of promises) that will cause the busy indicator to show.
+* `message` - Optional.  Defaults to 'Please Wait...'.  The message to show in the indicator.  This value may be updated while the promise is active.  The indicator will reflect the updated values as they're changed.
 * `backdrop` - Optional. Boolean, default is true. If true a faded backdrop will be shown behind the progress indicator.
-* `template` - Optional.  If provided, the given template will be shown in place of the default progress
-indicatory template. Use this to override the default UI and provide your own.
+* `templateUrl` - Optional.  If provided, the given template will be shown in place of the default progress indicatory template.
+* `delay` - Optional.  The amount of time to wait until showing the indicator.  Defaults to 0.  Specified in milliseconds.
+* `minDuration` - Optional.  The amount of time to keep the indicator showing even if the promise was resolved quicker.  Defaults to 0.  Specified in milliseconds.
 
 ## Providing Custom Templates
 
-The default progress template shows a spinner and a 'Please Wait...' message.  But you can define custom templates per instance
-(as shown above) or change the global default template.  To change the global default template just provide a new
-`$injector` value for `cgBusyTemplateName`.  Ex:
+The angular-busy indicator is a regular Angular template.  The templates have access to the scope where `cg-busy` was declared so you may reference your local scope variables in your custom templates.  Additionally, the scope is augmented with a `$message` field containing the indicator message text.
 
- ```js
-angular.module('yourapp').value('cgBusyTemplateName','your_custom_template_here.html');
+## Overriding Defaults
+
+The defaut values for `message`, `backdrop`, `templateUrl`, `delay`, and `minDuration` may all be overriden by overriding the `$injector` value for `cgBusyDefaults`, like so:
+
+```js
+angular.module('your_app').value('cgBusyDefaults',{
+	message:'Loading Stuff',
+	backdrop: false,
+	templateUrl: 'my_custom_template.html',
+	delay: 300,
+	minDuration: 700
+});
 ```
 
-Templates are full, normal Angular partials with access to the scope of where the `cg-busy` was used.
+Only the values you'd like overriden need to be specified.
+
 
 ## Release History
+ * v4.0.0 - Big update
+  * Dependency on angular-promise-tracker has been removed.  We now track promises directly.
+  * Message is now configurable.
+  * The template options is now templateUrl.
+  * The delay option has been added.
+  * The minDuration option has been added.
+  * Changing default template has been modified to be part of the new `cgBusyDefaults` value.
  * v3.0.2 - Reverting back to promise-tracker v1.5 due to changes in the api.
  * v3.0.1 - Fix for using cg-busy when a tracker has already been registered.
  * v3.0.0 - Support for new promise-tracker api.  Fix for multiple cg-busy's on the same scope.

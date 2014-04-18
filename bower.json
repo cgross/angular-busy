@@ -1,13 +1,12 @@
 {
   "name": "angular-busy",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "main": [
     "dist/angular-busy.js",
     "dist/angular-busy.css"
   ],
   "dependencies": {
     "angular": "~1.2",
-    "angular-promise-tracker": "~1.5",
     "angular-animate": "~1.2"
   },
   "ignore": [
@@ -26,6 +25,7 @@
     "README.md"
   ],
   "devDependencies": {
-    "jquery": "~2.0.2"
+    "angular-mocks": "~1.2.16",
+    "jquery": "~2.1.0"
   }
 }
