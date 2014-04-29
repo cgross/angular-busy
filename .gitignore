@@ -17,3 +17,7 @@ node_modules
 .DS_Store
 
 temp
+
+_SpecRunner.html
+
+.grunt

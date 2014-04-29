@@ -26,16 +26,16 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout',function($t
 				return;
 			}
 
-			if (options.delay > 0) {
+			if (options.delay) {
 				tracker.delayPromise = $timeout(function(){
 					tracker.delayPromise = null;
-					if (options.minDuration) {
-						tracker.durationPromise = $timeout(function(){
-							tracker.durationPromise = null;
-						},options.minDuration);
-					}
 				},options.delay);
 			}
+            if (options.minDuration) {
+                tracker.durationPromise = $timeout(function(){
+                    tracker.durationPromise = null;
+                },options.minDuration);
+            }            
 		};
 
 		tracker.getThen = function(promise){
