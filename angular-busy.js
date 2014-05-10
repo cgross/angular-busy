@@ -1,7 +1,7 @@
 angular.module('cgBusy',[]);
 
 //loosely modeled after angular-promise-tracker
-angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout',function($timeout){
+angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',function($timeout,$q){
 
 	return function(){
 
@@ -41,6 +41,10 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout',function($t
 		tracker.getThen = function(promise){
 			var then = promise && (promise.then || promise.$then ||
 	        	(promise.$promise && promise.$promise.then));
+
+            if (promise.denodeify) {
+                return $q.when(promise).then;
+            }
 
 			return then;
 		};
