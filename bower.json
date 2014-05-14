@@ -12,6 +12,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
+    "bower_components",
     "components",
     "test",
     "temp",
