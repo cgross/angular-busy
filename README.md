@@ -89,6 +89,7 @@ Only the values you'd like overriden need to be specified.
 
 
 ## Release History
+ * v4.0.4 - Added bower_components to bower ignore.
  * v4.0.3 - Now supports Q promises.
  * v4.0.2 - Fix for min duration only being used when delay also being set.
  * v4.0.0 - Big update
