@@ -134,4 +134,28 @@ describe('cgBusy', function() {
 
 	});	
 
+  it('can except an array with a promise.', function() {
+
+		this.element = compile('<div cg-busy="my_promise"></div>')(scope);
+		angular.element('body').append(this.element);
+
+		this.testPromise = q.defer();
+		scope.my_promise = [];
+		scope.my_promise.$promise = this.testPromise.promise;
+
+		//httpBackend.flush();
+
+		scope.$apply();
+
+		expect(this.element.children().length).toBe(1); //ensure element is added
+
+		expect(this.element.children().css('display')).toBe('block');//ensure its visible (promise is ongoing)
+
+		this.testPromise.resolve();
+		scope.$apply();
+
+		expect(this.element.children().css('display')).toBe('none'); //ensure its now invisible as the promise is resolved
+
+  });
+
 });
