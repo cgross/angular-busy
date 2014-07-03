@@ -131,8 +131,11 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
 						throw new Error('Invalid value for cg-busy.  cgBusy no longer accepts string ids to represent promises/trackers.');
 					}
 
-					//is it an array (of promises) or one promise
-					if (angular.isArray(options) || tracker.getThen(options)) {
+					if (tracker.getThen(options)) {
+						//it has a promise
+						options = {promise:[options]};
+					} else if (angular.isArray(options)) {
+						//it is an array of promises
 						options = {promise:options};
 					}
 
