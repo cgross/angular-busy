@@ -141,7 +141,7 @@ describe('cgBusy', function() {
 
 		this.testPromise = q.defer();
 		scope.my_promise = [];
-    scope.my_promise.$promise = this.testPromise.promise;
+		scope.my_promise.$promise = this.testPromise.promise;
 
 		//httpBackend.flush();
 
