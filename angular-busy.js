@@ -9,6 +9,7 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
 		tracker.promises = [];
 		tracker.delayPromise = null;
 		tracker.durationPromise = null;
+        tracker.delayJustFinished = false;
 
 		tracker.reset = function(options){
 			tracker.minDuration = options.minDuration;
@@ -26,15 +27,17 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
 				return;
 			}
 
+            tracker.delayJustFinished = false;
 			if (options.delay) {
 				tracker.delayPromise = $timeout(function(){
 					tracker.delayPromise = null;
-				},options.delay);
+                    tracker.delayJustFinished = true;
+				},parseInt(options.delay,10));
 			}
             if (options.minDuration) {
                 tracker.durationPromise = $timeout(function(){
                     tracker.durationPromise = null;
-                },options.minDuration);
+                },parseInt(options.minDuration,10) + (options.delay ? parseInt(options.delay,10) : 0));
             }            
 		};
 
@@ -80,10 +83,19 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
 			if (tracker.delayPromise){
 				return false;
 			}
-			if (tracker.durationPromise){
-				return true;
-			}
-			return tracker.promises.length > 0;
+
+            if (!tracker.delayJustFinished){
+                if (tracker.durationPromise){
+                    return true;
+                }
+                return tracker.promises.length > 0;
+            } else {
+                //if both delay and min duration are set, 
+                //we don't want to initiate the min duration if the 
+                //promise finished before the delay was complete
+                tracker.delayJustFinished = false;
+                return tracker.promises.length > 0;
+            }
 		};
 
 		return tracker;
@@ -106,6 +118,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
 				}
 
 				var templateElement;
+                var backdropElement;
 				var currentTemplate;
 				var templateScope;
 				var backdrop;
@@ -176,6 +189,9 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
 						if (templateElement) {
 							templateElement.remove();
 						}
+                        if (backdropElement){
+                            backdropElement.remove();
+                        }
 
 						currentTemplate = options.templateUrl;
 						backdrop = options.backdrop;
@@ -183,12 +199,17 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
 						$http.get(currentTemplate,{cache: $templateCache}).success(function(indicatorTemplate){
 
 							options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
-							var backdrop = options.backdrop ? '<div class="cg-busy cg-busy-backdrop"></div>' : '';
 
-							var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="$cgBusyIsActive()">'+ backdrop + indicatorTemplate+'</div>';
+                            if (options.backdrop){
+                                var backdrop = '<div class="cg-busy cg-busy-backdrop cg-busy-backdrop-animation ng-hide" ng-show="$cgBusyIsActive()"></div>';
+                                backdropElement = $compile(backdrop)(templateScope);
+                                element.append(backdropElement);
+                            }
+
+							var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate + '</div>';
 							templateElement = $compile(template)(templateScope);
 
-							angular.element(templateElement.children()[options.backdrop?1:0])
+							angular.element(templateElement.children()[0])
 								.css('position','absolute')
 								.css('top',0)
 								.css('left',0)

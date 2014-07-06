@@ -89,6 +89,9 @@ Only the values you'd like overriden need to be specified.
 
 
 ## Release History
+ * v4.1.0
+   * Change to how `delay` and `minDuration` work together.  If specified together, `minDuration` will only take effect if the promise was active through the delay.  For example, if `delay`=200 and `minDuration`=500 and the actual promise only took 100ms, no indicator will be shown.  If the delay threshold is reached, the indicator will show for `minDuration` ms rather than `minDuration` minus `delay` as it had been before.
+   * Backdrop now fades in with no movement.  Message still animates in from the top.
  * v4.0.4 - Added bower_components to bower ignore.
  * v4.0.3 - Now supports Q promises.
  * v4.0.2 - Fix for min duration only being used when delay also being set.

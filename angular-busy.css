@@ -4,6 +4,7 @@
 	left:0px;
 	right:0px;
 	bottom:0px;
+    z-index:1001;
 }
 
 .cg-busy-animation.ng-hide-add,
@@ -52,6 +53,19 @@
 	opacity:.7;
 }
 
+.cg-busy-backdrop-animation.ng-hide-add,
+.cg-busy-backdrop-animation.ng-hide-remove {
+    -webkit-transition:opacity .3s ease;
+    -moz-transition:opacity .3s ease;
+    -o-transition:opacity .3s ease;
+    transition:opacity .3s ease;
+    display:block !important;
+}
+
+.cg-busy-backdrop-animation.ng-hide {
+  opacity:0;
+}
+
 /* All styles below are for the default template. */
 
 .cg-busy-default-wrapper {
@@ -61,6 +75,7 @@
 .cg-busy-default-sign{
 	display: inline-block;
 	position:relative;
+    z-index:1002;
 	padding-bottom: 6px;
 	color:#333333;
 	text-shadow:0 1px 1px rgba(255, 255, 255, 0.75);

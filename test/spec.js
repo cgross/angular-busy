@@ -28,7 +28,7 @@ describe('cgBusy', function() {
 
 		scope.$apply();
 
-		expect(this.element.children().length).toBe(1); //ensure element is added
+		expect(this.element.children().length).toBe(2); //ensure the elements are added
 
 		expect(this.element.children().css('display')).toBe('block');//ensure its visible (promise is ongoing)
 
@@ -53,7 +53,7 @@ describe('cgBusy', function() {
 
 		scope.$apply();
 
-		expect(this.element.children().length).toBe(1); //ensure element is added
+		expect(this.element.children().length).toBe(2); //ensure the elements are added
 
 		expect(this.element.children().css('display')).toBe('block');//ensure its visible (promise is ongoing)
 
@@ -90,7 +90,7 @@ describe('cgBusy', function() {
 
 		scope.$apply();
 
-		expect(this.element.children().length).toBe(1); //ensure element is added
+		expect(this.element.children().length).toBe(2); //ensure the elements are added
 
 		expect(this.element.children().css('display')).toBe('none');
 
@@ -115,7 +115,7 @@ describe('cgBusy', function() {
 
 		scope.$apply();
 
-		expect(this.element.children().length).toBe(1); //ensure element is added
+		expect(this.element.children().length).toBe(2); //ensure the elements are added
 
 		expect(this.element.children().css('display')).toBe('block');
 
