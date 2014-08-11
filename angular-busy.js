@@ -64,19 +64,22 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
 			}
 			tracker.promises.push(promise);
 
-			then(function(){
-				promise.$cgBusyFulfilled = true;
-				if (tracker.promises.indexOf(promise) === -1) {
-					return;
+			then.call(
+				promise,
+				function(){
+					promise.$cgBusyFulfilled = true;
+					if (tracker.promises.indexOf(promise) === -1) {
+						return;
+					}
+					tracker.promises.splice(tracker.promises.indexOf(promise),1);
+				},function(){
+					promise.$cgBusyFulfilled = true;
+					if (tracker.promises.indexOf(promise) === -1) {
+						return;
+					}
+					tracker.promises.splice(tracker.promises.indexOf(promise),1);
 				}
-				tracker.promises.splice(tracker.promises.indexOf(promise),1);
-			},function(){
-				promise.$cgBusyFulfilled = true;
-				if (tracker.promises.indexOf(promise) === -1) {
-					return;
-				}
-				tracker.promises.splice(tracker.promises.indexOf(promise),1);
-			});
+			);
 		};
 
 		tracker.active = function(){
