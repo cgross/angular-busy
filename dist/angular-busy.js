@@ -94,7 +94,12 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
                 //we don't want to initiate the min duration if the 
                 //promise finished before the delay was complete
                 tracker.delayJustFinished = false;
-                return tracker.promises.length > 0;
+                if (tracker.promises.length > 0) {
+					return true;
+				}
+
+				tracker.durationPromise = null;
+				return false;
             }
 		};
 
