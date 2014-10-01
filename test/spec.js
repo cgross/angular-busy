@@ -134,4 +134,62 @@ describe('cgBusy', function() {
 
 	});	
 
+	it('should use delay and minDuration together when promise exceeds delay', function() {
+		this.element = compile('<div cg-busy="{promise:my_promise,delay:500,minDuration:1000}"></div>')(scope);
+		angular.element('body').append(this.element);
+
+		this.testPromise = q.defer();
+		scope.my_promise = this.testPromise.promise;
+
+		scope.$apply();
+
+		expect(this.element.children().length).toBe(2); //ensure the elements are added
+
+		expect(this.element.children().css('display')).toBe('none');
+
+		timeout.flush(200);
+		expect(this.element.children().css('display')).toBe('none');
+
+		timeout.flush(200); //400ms total
+		expect(this.element.children().css('display')).toBe('none');
+
+		timeout.flush(200); //600ms total - show now
+		expect(this.element.children().css('display')).toBe('block');	
+
+		this.testPromise.resolve();
+
+		timeout.flush(200); //800ms total
+		expect(this.element.children().css('display')).toBe('block');	
+
+		timeout.flush(600); //1400ms total
+		expect(this.element.children().css('display')).toBe('block');
+
+		timeout.flush(101); //1501ms total - hide now
+		expect(this.element.children().css('display')).toBe('none');
+	});
+
+	it('should use delay and minDuration together when promise completes before delay', function() {
+		this.element = compile('<div cg-busy="{promise:my_promise,delay:500,minDuration:1000}"></div>')(scope);
+		angular.element('body').append(this.element);
+
+		this.testPromise = q.defer();
+		scope.my_promise = this.testPromise.promise;
+
+		scope.$apply();
+
+		expect(this.element.children().length).toBe(2); //ensure the elements are added
+
+		expect(this.element.children().css('display')).toBe('none');
+
+		timeout.flush(200);
+		expect(this.element.children().css('display')).toBe('none');
+
+		timeout.flush(200); //400ms total
+		expect(this.element.children().css('display')).toBe('none');
+
+		this.testPromise.resolve();
+		
+		timeout.flush(200); //600ms total
+		expect(this.element.children().css('display')).toBe('none');
+	});
 });
