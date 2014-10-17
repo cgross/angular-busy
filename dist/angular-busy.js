@@ -64,7 +64,7 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
 			}
 			tracker.promises.push(promise);
 
-			then(function(){
+			then.call(promise, function(){
 				promise.$cgBusyFulfilled = true;
 				if (tracker.promises.indexOf(promise) === -1) {
 					return;
