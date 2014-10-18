@@ -21,3 +21,5 @@ temp
 _SpecRunner.html
 
 .grunt
+
+bower_components
