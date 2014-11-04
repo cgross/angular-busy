@@ -58,7 +58,7 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
                 promise = $q.when(promiseThing);
             }
                        
-            var then = (promise.then || promise.$them);
+            var then = (promise.then || promise.$then);
 
             then.call(promise,success,error);
         };
