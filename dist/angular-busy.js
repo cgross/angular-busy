@@ -43,7 +43,7 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
 
         tracker.isPromise = function(promiseThing){
             var then = promiseThing && (promiseThing.then || promiseThing.$then ||
-                (promiseThing.$promiseThing && promiseThing.$promiseThing.then));
+                (promiseThing.$promise && promiseThing.$promise.then));
 
             return typeof then !== 'undefined';            
         };
