@@ -58,7 +58,7 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
                 promise = $q.when(promiseThing);
             }
                        
-            var then = (promise.then || promise.$them);
+            var then = (promise.then || promise.$then);
 
             then.call(promise,success,error);
         };
@@ -139,7 +139,8 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                     delay:0,
                     minDuration:0,
                     backdrop: true,
-                    message:'Please Wait...'
+                    message:'Please Wait...',
+                    wrapperClass: 'cg-busy cg-busy-animation'
                 };
 
                 angular.extend(defaults,cgBusyDefaults);
@@ -216,7 +217,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                                 element.append(backdropElement);
                             }
 
-                            var template = '<div class="cg-busy cg-busy-animation ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate + '</div>';
+                            var template = '<div class="'+options.wrapperClass+' ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate + '</div>';
                             templateElement = $compile(template)(templateScope);
 
                             angular.element(templateElement.children()[0])
@@ -243,28 +244,51 @@ angular.module('cgBusy').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('angular-busy.html',
-    "<div class=\"cg-busy-default-wrapper\">\n" +
+    "<div class=\"cg-busy-default-wrapper\">\r" +
     "\n" +
-    "   <div class=\"cg-busy-default-sign\">\n" +
+    "\r" +
     "\n" +
-    "      <div class=\"cg-busy-default-spinner\">\n" +
-    "         <div class=\"bar1\"></div>\n" +
-    "         <div class=\"bar2\"></div>\n" +
-    "         <div class=\"bar3\"></div>\n" +
-    "         <div class=\"bar4\"></div>\n" +
-    "         <div class=\"bar5\"></div>\n" +
-    "         <div class=\"bar6\"></div>\n" +
-    "         <div class=\"bar7\"></div>\n" +
-    "         <div class=\"bar8\"></div>\n" +
-    "         <div class=\"bar9\"></div>\n" +
-    "         <div class=\"bar10\"></div>\n" +
-    "         <div class=\"bar11\"></div>\n" +
-    "         <div class=\"bar12\"></div>\n" +
-    "      </div>\n" +
+    "   <div class=\"cg-busy-default-sign\">\r" +
     "\n" +
-    "      <div class=\"cg-busy-default-text\">{{$message}}</div>\n" +
+    "\r" +
     "\n" +
-    "   </div>\n" +
+    "      <div class=\"cg-busy-default-spinner\">\r" +
+    "\n" +
+    "         <div class=\"bar1\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar2\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar3\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar4\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar5\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar6\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar7\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar8\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar9\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar10\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar11\"></div>\r" +
+    "\n" +
+    "         <div class=\"bar12\"></div>\r" +
+    "\n" +
+    "      </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "      <div class=\"cg-busy-default-text\">{{$message}}</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "   </div>\r" +
+    "\n" +
+    "\r" +
     "\n" +
     "</div>"
   );

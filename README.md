@@ -66,6 +66,7 @@ or this:
 * `templateUrl` - Optional.  If provided, the given template will be shown in place of the default progress indicatory template.
 * `delay` - Optional.  The amount of time to wait until showing the indicator.  Defaults to 0.  Specified in milliseconds.
 * `minDuration` - Optional.  The amount of time to keep the indicator showing even if the promise was resolved quicker.  Defaults to 0.  Specified in milliseconds.
+* `wrapperClass` - Optional.  The name(s) of the CSS classes to be applied to the wrapper element of the busy sign/animation.  Defaults to `cg-busy cg-busy-animation`.  Typically only useful if you wish to apply different positioning to the animation.
 
 ## Providing Custom Templates
 
@@ -77,11 +78,12 @@ The defaut values for `message`, `backdrop`, `templateUrl`, `delay`, and `minDur
 
 ```js
 angular.module('your_app').value('cgBusyDefaults',{
-	message:'Loading Stuff',
-	backdrop: false,
-	templateUrl: 'my_custom_template.html',
-	delay: 300,
-	minDuration: 700
+  message:'Loading Stuff',
+  backdrop: false,
+  templateUrl: 'my_custom_template.html',
+  delay: 300,
+  minDuration: 700,
+  wrapperClass: 'my-class my-class2'
 });
 ```
 
@@ -89,6 +91,7 @@ Only the values you'd like overriden need to be specified.
 
 
 ## Release History
+ * v4.1.2 - Small bugs fixed, wrapperClass option added.
  * v4.1.1 - Compatibility with Angular 1.3.
  * v4.1.0
    * Change to how `delay` and `minDuration` work together.  If specified together, `minDuration` will only take effect if the promise was active through the delay.  For example, if `delay`=200 and `minDuration`=500 and the actual promise only took 100ms, no indicator will be shown.  If the delay threshold is reached, the indicator will show for `minDuration` ms rather than `minDuration` minus `delay` as it had been before.
