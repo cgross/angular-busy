@@ -8,7 +8,7 @@
 
 ## Getting Started
 
-Install with Bower or download the the files directly from the dist folder in the repo.
+Install with Bower or download the files directly from the dist folder in the repo.
 
 ```bash
 bower install angular-busy --save
