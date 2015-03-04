@@ -1,5 +1,6 @@
 {
   "name": "angular-busy",
+  "main": "angular-busy.js",
   "version": "4.1.2",
   "description": "",
   "repository": {
