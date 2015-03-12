@@ -215,7 +215,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
 							templateElement = $compile(template)(templateScope);
 
 							angular.element(templateElement.children()[0])
-								.css('position','absolute')
+								.css('position','fixed')
 								.css('top',0)
 								.css('left',0)
 								.css('right',0)
