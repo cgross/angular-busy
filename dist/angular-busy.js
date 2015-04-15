@@ -118,8 +118,8 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
 
 angular.module('cgBusy').value('cgBusyDefaults',{});
 
-angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusyDefaults','$http','_cgBusyTrackerFactory',
-    function($compile,$templateCache,cgBusyDefaults,$http,_cgBusyTrackerFactory){
+angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusyDefaults','$http','_cgBusyTrackerFactory','$interpolate',
+    function($compile,$templateCache,cgBusyDefaults,$http,_cgBusyTrackerFactory,$interpolate){
         return {
             restrict: 'A',
             link: function(scope, element, attrs, fn) {
@@ -221,6 +221,16 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                             }
 
                             var template = '<div class="'+options.wrapperClass+' ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate + '</div>';
+
+                            var startSym = $interpolate.startSymbol(),
+                                endSym = $interpolate.endSymbol();
+
+                              // If either of the interpolation symbols have been changed, we need to alter this template
+                            if (startSym !== '{{' || endSym !== '}}') {
+                              template = template.replace(/\{\{/g, startSym);
+                              template = template.replace(/\}\}/g, endSym);
+                            }
+
                             templateElement = $compile(template)(templateScope);
 
                             angular.element(templateElement.children()[0])
