@@ -91,6 +91,7 @@ Only the values you'd like overriden need to be specified.
 
 
 ## Release History
+ * v4.1.4 - Updated for Angular 1.4.5
  * v4.1.3 - Fix for issue #45 and issue #49.
  * v4.1.2 - Small bugs fixed, wrapperClass option added.
  * v4.1.1 - Compatibility with Angular 1.3.
