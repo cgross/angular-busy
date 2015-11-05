@@ -185,6 +185,16 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
 
                     templateScope.$message = options.message;
 
+                    if (options.promise) {
+						// Assign each promise a "id" field, so the equals below will work correctly
+						// Specifically - if we counter a new promise object, reset the tracker.
+                        angular.forEach(options.promise, function(promise) {
+                            if (promise) {
+                                promise.id = promise.id || Math.random();
+                            }
+                        });
+                    }
+
                     if (!angular.equals(tracker.promises,options.promise)) {
                         tracker.reset({
                             promises:options.promise,
