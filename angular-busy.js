@@ -183,7 +183,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                         templateScope = scope.$new();
                     }
 
-                    templateScope.$message = options.message;
+                    templateScope.$message = options.message !== false ? options.message : '';
 
                     if (!angular.equals(tracker.promises,options.promise)) {
                         tracker.reset({
