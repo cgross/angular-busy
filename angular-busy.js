@@ -210,7 +210,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                         currentTemplate = options.templateUrl;
                         backdrop = options.backdrop;
 
-                        $http.get(currentTemplate,{cache: $templateCache}).success(function(indicatorTemplate){
+                        $http.get(currentTemplate,{cache: $templateCache}).then(function(indicatorTemplate){
 
                             options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
 
@@ -231,7 +231,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                                 .css('bottom',0);
                             element.append(templateElement);
 
-                        }).error(function(data){
+                        }).catch(function(data){
                             throw new Error('Template specified for cgBusy ('+options.templateUrl+') could not be loaded. ' + data);
                         });
                     }
