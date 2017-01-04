@@ -220,7 +220,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                                 element.append(backdropElement);
                             }
 
-                            var template = '<div class="'+options.wrapperClass+' ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate + '</div>';
+                            var template = '<div class="'+options.wrapperClass+' ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate.data + '</div>';
                             templateElement = $compile(template)(templateScope);
 
                             angular.element(templateElement.children()[0])
