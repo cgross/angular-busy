@@ -62,7 +62,7 @@ or this:
 ```
 
 * `promise` - Required. The promise (or array of promises) that will cause the busy indicator to show.
-* `message` - Optional.  Defaults to 'Please Wait...'.  The message to show in the indicator.  This value may be updated while the promise is active.  The indicator will reflect the updated values as they're changed.
+* `message` - Optional.  Defaults to 'Please Wait...'.  The message to show in the indicator.  This value may be updated while the promise is active.  The indicator will reflect the updated values as they're changed.  `false` to hide message.
 * `backdrop` - Optional. Boolean, default is true. If true a faded backdrop will be shown behind the progress indicator.
 * `templateUrl` - Optional.  If provided, the given template will be shown in place of the default progress indicatory template.
 * `delay` - Optional.  The amount of time to wait until showing the indicator.  Defaults to 0.  Specified in milliseconds.
