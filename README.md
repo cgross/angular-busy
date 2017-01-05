@@ -8,10 +8,11 @@
 
 ## Getting Started
 
-Install with Bower or download the files directly from the dist folder in the repo.
+Install with Bower, npm, yarn, or download the files directly from the dist folder in the repo.
 
 ```bash
 bower install angular-busy --save
+npm install @cgross/angular-busy
 ```
 
 Add `dist/angular-busy.js` and `dist/angular-busy.css` to your index.html.
@@ -91,6 +92,7 @@ Only the values you'd like overriden need to be specified.
 
 
 ## Release History
+ * v4.1.4 - Fixed deprecated Angular success promise methods for 1.6.  Published to npm.
  * v4.1.3 - Fix for issue #45 and issue #49.
  * v4.1.2 - Small bugs fixed, wrapperClass option added.
  * v4.1.1 - Compatibility with Angular 1.3.

@@ -58,7 +58,8 @@ module.exports = function (grunt) {
     copy: {
       main: {
         files: [
-          {src:'angular-busy.css',dest:'dist/'}
+          {src:'angular-busy.css',dest:'dist/'},
+          {src:'index.js',dest:'dist/'}
         ]
       }
     },

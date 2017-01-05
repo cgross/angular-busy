@@ -210,7 +210,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                         currentTemplate = options.templateUrl;
                         backdrop = options.backdrop;
 
-                        $http.get(currentTemplate,{cache: $templateCache}).success(function(indicatorTemplate){
+                        $http.get(currentTemplate,{cache: $templateCache}).then(function(indicatorTemplate){
 
                             options.backdrop = typeof options.backdrop === 'undefined' ? true : options.backdrop;
 
@@ -220,7 +220,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                                 element.append(backdropElement);
                             }
 
-                            var template = '<div class="'+options.wrapperClass+' ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate + '</div>';
+                            var template = '<div class="'+options.wrapperClass+' ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate.data + '</div>';
                             templateElement = $compile(template)(templateScope);
 
                             angular.element(templateElement.children()[0])
@@ -231,7 +231,7 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                                 .css('bottom',0);
                             element.append(templateElement);
 
-                        }).error(function(data){
+                        }, function(data){
                             throw new Error('Template specified for cgBusy ('+options.templateUrl+') could not be loaded. ' + data);
                         });
                     }
