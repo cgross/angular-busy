@@ -118,16 +118,30 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
 
 angular.module('cgBusy').value('cgBusyDefaults',{});
 
-angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusyDefaults','$http','_cgBusyTrackerFactory',
-    function($compile,$templateCache,cgBusyDefaults,$http,_cgBusyTrackerFactory){
+angular.module('cgBusy').directive('cgBusy',['$compile', '$document', '$templateCache','cgBusyDefaults','$http','_cgBusyTrackerFactory',
+    function ($compile, $document, $templateCache, cgBusyDefaults, $http, _cgBusyTrackerFactory) {
+        var tableContainers = ['TBODY', 'THEAD', 'TFOOT', 'TR'];
+        var body = angular.element($document[0].body);
         return {
             restrict: 'A',
             link: function(scope, element, attrs, fn) {
-
+                //Elements like tbody , thead, tfooter, tr don't allow other - non table elements
+                var isTableContainer = tableContainers.indexOf(element[0].nodeName) !== -1;
                 //Apply position:relative to parent element if necessary
-                var position = element.css('position');
-                if (position === 'static' || position === '' || typeof position === 'undefined'){
-                    element.css('position','relative');
+                if (!isTableContainer) {
+                    var position = element.css('position');
+                    if (position === 'static' || position === '' || typeof position === 'undefined'){
+                        element.css('position','relative');
+                    }
+                } else {
+                    scope.$on('$destroy', function() {
+                        if (templateElement) {
+                            templateElement.remove();
+                        }
+                        if (backdropElement) {
+                            backdropElement.remove();
+                        }
+                    });
                 }
 
                 var templateElement;
@@ -136,6 +150,13 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                 var templateScope;
                 var backdrop;
                 var tracker = _cgBusyTrackerFactory();
+                var container = isTableContainer ? body : element;
+                var loaderPosition = {
+                    top:0,
+                    left:0,
+                    right:0,
+                    bottom:0
+                }
 
                 var defaults = {
                     templateUrl: 'angular-busy.html',
@@ -217,19 +238,25 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                             if (options.backdrop){
                                 var backdrop = '<div class="cg-busy cg-busy-backdrop cg-busy-backdrop-animation ng-hide" ng-show="$cgBusyIsActive()"></div>';
                                 backdropElement = $compile(backdrop)(templateScope);
-                                element.append(backdropElement);
+                                container.append(backdropElement);
                             }
 
                             var template = '<div class="'+options.wrapperClass+' ng-hide" ng-show="$cgBusyIsActive()">' + indicatorTemplate.data + '</div>';
                             templateElement = $compile(template)(templateScope);
 
+                            if (isTableContainer) {
+                                var rect = element[0].getClientRects()[0];
+                                loaderPosition = {
+                                    top: rect.top + 'px',
+                                    left: rect.left +'px',
+                                    height: rect.bottom - rect.top + 'px',
+                                    width: rect.right - rect.left + 'px'
+                                }
+                            }
                             angular.element(templateElement.children()[0])
-                                .css('position','absolute')
-                                .css('top',0)
-                                .css('left',0)
-                                .css('right',0)
-                                .css('bottom',0);
-                            element.append(templateElement);
+                                    .css('position','absolute')
+                                    .css(loaderPosition);
+                            container.append(templateElement)
 
                         }, function(data){
                             throw new Error('Template specified for cgBusy ('+options.templateUrl+') could not be loaded. ' + data);
@@ -248,9 +275,7 @@ angular.module('cgBusy').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('angular-busy.html',
     "<div class=\"cg-busy-default-wrapper\">\n" +
-    "\n" +
     "   <div class=\"cg-busy-default-sign\">\n" +
-    "\n" +
     "      <div class=\"cg-busy-default-spinner\">\n" +
     "         <div class=\"bar1\"></div>\n" +
     "         <div class=\"bar2\"></div>\n" +
@@ -265,11 +290,8 @@ angular.module('cgBusy').run(['$templateCache', function($templateCache) {
     "         <div class=\"bar11\"></div>\n" +
     "         <div class=\"bar12\"></div>\n" +
     "      </div>\n" +
-    "\n" +
     "      <div class=\"cg-busy-default-text\">{{$message}}</div>\n" +
-    "\n" +
     "   </div>\n" +
-    "\n" +
     "</div>"
   );
 
