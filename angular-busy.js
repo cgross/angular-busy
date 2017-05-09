@@ -38,14 +38,14 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
                 tracker.durationPromise = $timeout(function(){
                     tracker.durationPromise = null;
                 },parseInt(options.minDuration,10) + (options.delay ? parseInt(options.delay,10) : 0));
-            }            
+            }
         };
 
         tracker.isPromise = function(promiseThing){
             var then = promiseThing && (promiseThing.then || promiseThing.$then ||
                 (promiseThing.$promise && promiseThing.$promise.then));
 
-            return typeof then !== 'undefined';            
+            return typeof then !== 'undefined';
         };
 
         tracker.callThen = function(promiseThing,success,error){
@@ -57,7 +57,7 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
             } else if (promiseThing.denodeify){
                 promise = $q.when(promiseThing);
             }
-                       
+
             var then = (promise.then || promise.$then);
 
             then.call(promise,success,error);
@@ -100,8 +100,8 @@ angular.module('cgBusy').factory('_cgBusyTrackerFactory',['$timeout','$q',functi
                 }
                 return tracker.promises.length > 0;
             } else {
-                //if both delay and min duration are set, 
-                //we don't want to initiate the min duration if the 
+                //if both delay and min duration are set,
+                //we don't want to initiate the min duration if the
                 //promise finished before the delay was complete
                 tracker.delayJustFinished = false;
                 if (tracker.promises.length === 0) {
@@ -125,7 +125,13 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
             link: function(scope, element, attrs, fn) {
 
                 //Apply position:relative to parent element if necessary
-                var position = element.css('position');
+                var position = '';
+                if (typeof window.getComputedStyle === 'function'){
+	                position = window.getComputedStyle(element[0]).position;
+                }
+	            if (!position) {
+		            position = element.css('position');
+	            }
                 if (position === 'static' || position === '' || typeof position === 'undefined'){
                     element.css('position','relative');
                 }
