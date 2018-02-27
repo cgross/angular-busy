@@ -143,7 +143,8 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                     minDuration:0,
                     backdrop: true,
                     message:'Please Wait...',
-                    wrapperClass: 'cg-busy cg-busy-animation'
+                    wrapperClass: 'cg-busy cg-busy-animation',
+                    busyClass: 'cg-busy-active'
                 };
 
                 angular.extend(defaults,cgBusyDefaults);
@@ -194,7 +195,16 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                     }
 
                     templateScope.$cgBusyIsActive = function() {
-                        return tracker.active();
+                        var isActive = tracker.active();
+
+                        if (isActive) {
+                            element.addClass(options.busyClass);
+                        }
+                        else {
+                            element.removeClass(options.busyClass);
+                        }
+
+                        return isActive;
                     };
 
 
