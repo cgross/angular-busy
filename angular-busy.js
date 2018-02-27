@@ -143,7 +143,8 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                     minDuration:0,
                     backdrop: true,
                     message:'Please Wait...',
-                    wrapperClass: 'cg-busy cg-busy-animation'
+                    wrapperClass: 'cg-busy cg-busy-animation',
+                    busyClass: 'cg-busy-active'
                 };
 
                 angular.extend(defaults,cgBusyDefaults);
@@ -194,7 +195,16 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
                     }
 
                     templateScope.$cgBusyIsActive = function() {
-                        return tracker.active();
+                        var isActive = tracker.active();
+
+                        if (isActive) {
+                            element.addClass(options.busyClass);
+                        }
+                        else {
+                            element.removeClass(options.busyClass);
+                        }
+
+                        return isActive;
                     };
 
 
@@ -242,3 +252,35 @@ angular.module('cgBusy').directive('cgBusy',['$compile','$templateCache','cgBusy
     }
 ]);
 
+
+angular.module('cgBusy').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('angular-busy.html',
+    "<div class=\"cg-busy-default-wrapper\">\n" +
+    "\n" +
+    "   <div class=\"cg-busy-default-sign\">\n" +
+    "\n" +
+    "      <div class=\"cg-busy-default-spinner\">\n" +
+    "         <div class=\"bar1\"></div>\n" +
+    "         <div class=\"bar2\"></div>\n" +
+    "         <div class=\"bar3\"></div>\n" +
+    "         <div class=\"bar4\"></div>\n" +
+    "         <div class=\"bar5\"></div>\n" +
+    "         <div class=\"bar6\"></div>\n" +
+    "         <div class=\"bar7\"></div>\n" +
+    "         <div class=\"bar8\"></div>\n" +
+    "         <div class=\"bar9\"></div>\n" +
+    "         <div class=\"bar10\"></div>\n" +
+    "         <div class=\"bar11\"></div>\n" +
+    "         <div class=\"bar12\"></div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"cg-busy-default-text\">{{$message}}</div>\n" +
+    "\n" +
+    "   </div>\n" +
+    "\n" +
+    "</div>"
+  );
+
+}]);
